@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Buracoff</string>
+
+    <!-- MainActivity -->
+    <string name="title_pothole_detector">Detector de Buracos</string>
+    <string name="label_impact">Impacto</string>
+    <string name="format_impact_value">%.1f G</string>
+    <string name="label_total_detected">Total Detectado: %d</string>
+    <string name="button_start_monitoring">Iniciar Monitoramento</string>
+    <string name="button_stop">Parar</string>
+
+    <!-- PotholeService -->
+    <string name="notification_channel_name">Detector Service</string>
+    <string name="notification_title">Detector de Buracos Ativo</string>
+    <string name="notification_monitoring">Monitorando estrada…</string>
+
+    <!-- SensorDataRepository -->
+    <string name="error_sensor_not_available">Acelerômetro Linear não disponível neste dispositivo</string>
+</resources>
