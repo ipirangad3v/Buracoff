@@ -1,9 +1,12 @@
 package digital.tonima.buracoff.data.repository
 
+import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import dagger.hilt.android.qualifiers.ApplicationContext
+import digital.tonima.buracoff.R
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -14,7 +17,8 @@ data class SensorData(val x: Float, val y: Float, val z: Float)
 
 @Singleton
 class SensorDataRepository @Inject constructor(
-    private val sensorManager: SensorManager
+    private val sensorManager: SensorManager,
+    @ApplicationContext private val context: Context
 ) {
 
     val sensorReadings: Flow<SensorData> = callbackFlow {
@@ -33,7 +37,7 @@ class SensorDataRepository @Inject constructor(
         if (accelerometer != null) {
             sensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_GAME)
         } else {
-            close(Exception("Acelerômetro Linear não disponível neste dispositivo"))
+            close(Exception(context.getString(R.string.error_sensor_not_available)))
         }
 
         awaitClose {

@@ -5,9 +5,13 @@
     <string name="title_pothole_detector">Detector de Buracos</string>
     <string name="label_impact">Impacto</string>
     <string name="format_impact_value">%.1f G</string>
+    <string name="format_last_impact">Último impacto: %.1f G</string>
     <string name="label_total_detected">Total Detectado: %d</string>
     <string name="button_start_monitoring">Iniciar Monitoramento</string>
     <string name="button_stop">Parar</string>
+    <string name="status_pothole_detected">BURACO DETECTADO!</string>
+    <string name="status_monitoring">Monitorando</string>
+    <string name="graph_title">Sensor de Vibração</string>
 
     <!-- PotholeService -->
     <string name="notification_channel_name">Detector Service</string>

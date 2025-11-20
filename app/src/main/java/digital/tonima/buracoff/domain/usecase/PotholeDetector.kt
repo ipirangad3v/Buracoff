@@ -4,6 +4,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import digital.tonima.buracoff.domain.model.SensorDataPoint
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,6 +21,13 @@ class PotholeDetector @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val potholeEvents = _potholeEvents.asSharedFlow()
+
+    private val _sensorData = MutableSharedFlow<SensorDataPoint>(
+        replay = 0,
+        extraBufferCapacity = 100,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val sensorData = _sensorData.asSharedFlow()
 
     private val THRESHOLD_Z_ACCEL = 8.0
     private var isRunning = false
@@ -45,8 +53,17 @@ class PotholeDetector @Inject constructor(
             val z = it.values[2]
 
             val magnitude = sqrt((x * x + y * y + z * z).toDouble())
+            val isPothole = magnitude > THRESHOLD_Z_ACCEL
 
-            if (magnitude > THRESHOLD_Z_ACCEL) {
+            val dataPoint = SensorDataPoint(
+                timestamp = System.currentTimeMillis(),
+                magnitude = magnitude,
+                isPothole = isPothole
+            )
+
+            _sensorData.tryEmit(dataPoint)
+
+            if (isPothole) {
                 _potholeEvents.tryEmit(magnitude)
             }
         }
